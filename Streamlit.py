@@ -5,7 +5,7 @@ import os
 data_path: str = os.path.join("C:\\", "Users", "jsche", "Downloads")
 
 # Laden des ML-Modells
-model = joblib.load("c:\Users\jsche\Desktop\ML4B\my_model.joblib")
+model = joblib.load("c:\\Users\\jsche\\Desktop\\ML4B\\my_model.joblib")
 
 # Funktion zur Berechnung des Kalorienverbrauchs
 def berechne_kalorienverbrauch(gewicht, groesse, aktivitaet):
