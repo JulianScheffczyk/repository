@@ -1,47 +1,29 @@
 import streamlit as st
 import joblib
-import os
-
-data_path: str = os.path.join("C:\\", "Users", "jsche", "Downloads")
 
 # Laden des ML-Modells
-model = joblib.load("c:\\Users\\jsche\\Desktop\\ML4B\\my_model.joblib")
+model = joblib.load('my_model.joblib')
 
-# Funktion zur Berechnung des Kalorienverbrauchs
-def berechne_kalorienverbrauch(gewicht, groesse, aktivitaet):
-    if aktivitaet == "Gehen":
-        kalorienverbrauch = 0.5 * gewicht + 0.1 * groesse
-    elif aktivitaet == "Fahrrad fahren":
-        kalorienverbrauch = 0.3 * gewicht + 0.2 * groesse
-    elif aktivitaet == "Auto fahren":
-        kalorienverbrauch = 0.1 * gewicht + 0.05 * groesse
-    else:
-        kalorienverbrauch = 0.0
-    return kalorienverbrauch
+# Funktion zum Berechnen des Kalorienverbrauchs
+def berechne_kalorienverbrauch(gewicht, koerpergroesse, aktivitaet):
+    input_data = [[gewicht, koerpergroesse, aktivitaet]]
+    prediction = model.predict(input_data)[0]
+    return prediction
 
 # Streamlit-Anwendung
 def main():
-    st.title("Kalorienverbrauch-Rechner")
-    
-    gewicht = st.number_input("Gewicht (kg)")
-    groesse = st.number_input("Körpergröße (cm)")
-    aktivitaet = st.selectbox("Aktivität", ["Gehen", "Fahrrad fahren", "Auto fahren"])
-    
-    kalorienverbrauch = berechne_kalorienverbrauch(gewicht, groesse, aktivitaet)
-    st.write("Kalorienverbrauch:", kalorienverbrauch, "kcal")
-    
-    st.write("Aktivitätserkennung:")
-    features = [gewicht, groesse]
-    prediction = model.predict([features])[0]
-    if prediction == 0:
-        st.write("Die Aktivität wird als Gehen erkannt.")
-    elif prediction == 1:
-        st.write("Die Aktivität wird als Fahrrad fahren erkannt.")
-    elif prediction == 2:
-        st.write("Die Aktivität wird als Auto fahren erkannt.")
-    else:
-        st.write("Aktivität nicht erkannt.")
+    st.title("Kalorienverbrauch Rechner")
+    st.write("Gib dein Gewicht, deine Körpergröße und die Art der Aktivität ein:")
 
-if __name__ == "__main__":
+    gewicht = st.number_input("Gewicht (in kg)")
+    koerpergroesse = st.number_input("Körpergröße (in cm)")
+    aktivitaet = st.selectbox("Aktivität", ["Gehen", "Fahrradfahren", "Autofahren"])
+
+    if st.button("Berechnen"):
+        kalorienverbrauch = berechne_kalorienverbrauch(gewicht, koerpergroesse, aktivitaet)
+        st.write(f"Der geschätzte Kalorienverbrauch beträgt: {kalorienverbrauch} kcal")
+
+    st.write("Bitte beachte, dass dies eine grobe Schätzung ist.")
+
+if __name__ == '__main__':
     main()
-
