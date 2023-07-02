@@ -61,13 +61,13 @@ def show_home():
     col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.image('JulianScheffczyk.jpg', caption='Julian Scheffczyk', width=200 ,output_format="auto")
+    st.image('JulianScheffczyk.jpg')
 
 with col2:
     st.write(' ')
 
 with col3:
-    st.image('JulianScheffczyk.jpg', caption='Julian Scheffczyk', width=200 ,output_format="auto")
+    st.image('JulianScheffczyk.jpg')
     
     st.write("Hier ist eine Übersicht der weiteren Reiter:")
     st.write("- Berechnung: Kalorienberechnung")
