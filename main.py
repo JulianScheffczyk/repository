@@ -112,7 +112,7 @@ def show_about():
     st.title("About")
     st.write("Author: Julian Scheffczyk")
     st.write("Machine Learning Model: Neuronal Network - Classification (SciKit Learn)")
-    #st.image('C:\Users\jsche\Desktop\ML4B\JulianScheffczyk.JPG', caption='Julian Scheffczyk', width=200 ,output_format="auto")
+    st.image('JulianScheffczyk.JPG', caption='Julian Scheffczyk', width=200 ,output_format="auto")
     st.write("https://scikit-learn.org/stable/modules/neural_networks_supervised.html#multi-layer-perceptron")
     st.write("Data Preperation: Windowing in 10 Sekunden Parts")
     st.write("Data Collection: Sensor Logger App")
