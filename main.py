@@ -58,7 +58,7 @@ def show_home():
     st.write("Diese Streamlit Website kann anhand einer JSON File, die mit dem Sensor Logger aufgezeichnet wurde ausgeben, wie viel Kalorien in dem Zeitraum verbrannt wurden.")
     st.write("Diese Kalorienberechnung basiert auf generellen Durchschnittswerten und kann durch Geschlecht oder Körpermasse variieren.")
     st.write(" ")
-    st.image('QR.jpg', caption='Sensor Logger App im Apple App Store', width=200 ,output_format="auto")
+    st.image('frame.png', caption='Sensor Logger App im Apple App Store', width=200 ,output_format="auto")
     st.write("Hier sind die Sensoren und die nötige Einstellungen in der Sensor Logger App, um eine erfolgreiche Berechnung zu ermöglichen:")
     st.write("Accelerometer")
     st.write("Gyroscope")
