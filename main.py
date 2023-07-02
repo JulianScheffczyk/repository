@@ -56,7 +56,7 @@ def main():
 def show_home():
     st.title("Home")
     st.write("Diese Streamlit Website kann anhand einer JSON File, die mit dem Sensor Logger aufgezeichnet wurde ausgeben, wie viel Kalorien in dem Zeitraum verbrannt wurden.")
-    st.write("Diese Kalorienberechnung wird anhand von Körpermasse und Geschlecht verfeinert um eine möglichst genaue Berechnung zu garantieren.")
+    st.write("Diese Kalorienberechnung basiert auf generellen Durchschnittswerten und kann durch Geschlecht oder Körpermasse variieren.")
     st.write("Hier ist eine Übersicht der weiteren Reiter:")
     st.write("- Berechnung: Kalorienberechnung")
     st.write("- Hintergrund: Backstory zu dem Erstellen der Website")
