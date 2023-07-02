@@ -14,7 +14,7 @@ CLASS_MAPPING = {0: "Gehen", 1: "Fahrrad", 2: "Auto", 3: "Bus"}
 COLOR_MAPPING = ['green', 'blue', 'red', 'brown']
 
 # Streamlit-App konfigurieren
-st.title('Bewegungserkennung')
+st.title('MoveClassify' + (c))
 
 # Benutzerdefinierte Funktion zum Vorhersagen der Bewegungsart
 def predict_motion(data, model=trained_model):  # !! wird nicht mehr verwendet -> Funktion kann weg !!
