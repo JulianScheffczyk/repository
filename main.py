@@ -58,8 +58,17 @@ def show_home():
     st.write("Diese Streamlit Website kann anhand einer JSON File, die mit dem Sensor Logger aufgezeichnet wurde ausgeben, wie viel Kalorien in dem Zeitraum verbrannt wurden.")
     st.write("Diese Kalorienberechnung basiert auf generellen Durchschnittswerten und kann durch Geschlecht oder Körpermasse variieren.")
     st.write("Hier sind die Sensoren und die nötige Einstellungen in der Sensor Logger App, um eine erfolgreiche Berechnung zu ermöglichen:")
+    col1, col2, col3 = st.columns(3)
+
+with col1:
     st.image('JulianScheffczyk.jpg', caption='Julian Scheffczyk', width=200 ,output_format="auto")
+
+with col2:
+    st.write(' ')
+
+with col3:
     st.image('JulianScheffczyk.jpg', caption='Julian Scheffczyk', width=200 ,output_format="auto")
+    
     st.write("Hier ist eine Übersicht der weiteren Reiter:")
     st.write("- Berechnung: Kalorienberechnung")
     st.write("- Hintergrund: Backstory zu dem Erstellen der Website")
