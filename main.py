@@ -6,18 +6,18 @@ import pandas as pd
 import joblib
 from sklearn.neural_network import MLPClassifier
 
-# Lade das Scikit-Learn-Modell
+# Load model
 trained_model = joblib.load('my_model.joblib')  # !! Use joblib, not pickle !!
 
 sliding_window_length: int = 10
 CLASS_MAPPING = {0: "Gehen", 1: "Fahrrad", 2: "Auto", 3: "Bus"}
 COLOR_MAPPING = ['green', 'blue', 'red', 'brown']
 
-# Streamlit-App konfigurieren
-st.title('MoveClassify')
+# Configure Streamlit
+st.title('Bewegungserkennung')
 
 def main():
-    # Seite auswählen
+    # choose page
     selected = option_menu(
         menu_title = None,
         options=["Home", "Berechnung", "Hintergrund", "About"],
@@ -26,7 +26,7 @@ def main():
         default_index=0,
         orientation="horizontal")
 
-    # Seiteninhalt anzeigen
+    # page content
     if selected == "Home":
         show_home()
     elif selected == "Berechnung":
@@ -59,7 +59,6 @@ def show_home():
 
 def show_berechnung():
     st.title("Berechnung")
-    # Streamlit-Anwendung
     uploaded_files = st.file_uploader("Lade eine Datei als .JSON File hoch und es wird der Kalorienverbrauch berechnet!", accept_multiple_files=True) # !! allow more than one file !!
 
     data_list = []
@@ -163,16 +162,16 @@ def calc_total_durations(acts_by_time_df, class_mapping=CLASS_MAPPING):
         results[curr_pred_class]["tot_time"] += curr_duration
 
         # Hier kommt die Berechnung des Kalorienverbrauchs basierend auf der Aktivität hin
-        # Annahme: Kalorienverbrauch pro Minute für jede Aktivität
-        # Gehen: 5 kcal/min, Fahrrad: 10 kcal/min, Auto: 2 kcal/min, Bus: 3 kcal/min
+        # Assumption: Calories per minute per activity:
+        # walk: 5 kcal/min, bike: 10 kcal/min, car: 2 kcal/min, bus: 3 kcal/min
         kalorienverbrauch = 0
-        if curr_pred_class == 0:  # Gehen
+        if curr_pred_class == 0:  # walk
             kalorienverbrauch = 5 * curr_duration.total_seconds() / 60
-        elif curr_pred_class == 1:  # Fahrrad
+        elif curr_pred_class == 1:  # bike
             kalorienverbrauch = 10 * curr_duration.total_seconds() / 60
-        elif curr_pred_class == 2:  # Auto
+        elif curr_pred_class == 2:  # car
             kalorienverbrauch = 2 * curr_duration.total_seconds() / 60
-        elif curr_pred_class == 3:  # Bus
+        elif curr_pred_class == 3:  # bus
             kalorienverbrauch = 3 * curr_duration.total_seconds() / 60
 
         results[curr_pred_class]["kalorien"] += kalorienverbrauch
@@ -188,7 +187,7 @@ def calc_total_durations(acts_by_time_df, class_mapping=CLASS_MAPPING):
 
 def plot_total_durations(results_df, class_mapping=CLASS_MAPPING):
     # For control: Print results of summation
-    #print(results_df)
+    # print(results_df)
     st.write(results_df.rename({"tot_time": "Minuten gesamt"}, axis=1).rename(class_mapping, axis=0))
     print(results_df.dtypes)
     print(results_df["tot_time"].isna().any())
@@ -203,7 +202,7 @@ def plot_total_durations(results_df, class_mapping=CLASS_MAPPING):
     return results_df
 
 
-def activities_by_timestamps(windows, times, raw_predictions,
+def activities_by_timestamps(times, raw_predictions,
                              time_window=30 # time window for averaging in seconds; skip smoothing/filling of gaps if None
                              ):
     """Create and plot dataframe mapping timestamps to activities.
@@ -229,9 +228,10 @@ def activities_by_timestamps(windows, times, raw_predictions,
         acts_by_time_df = (
             acts_by_time_df
             # set most occurring value (if any observations available in time slot)
-            .resample(f"{time_window}S", on="time").aggregate({"activity": lambda slot: None if not len((f := slot.mode()))>0 else f.values[0]})
-            .dropna(axis=0, how="all")
-            .reset_index()
+            .resample(f"{time_window}S", on="time") #ersetzt nicht erkannte werte durch die labels aussenrum
+            .aggregate({"activity": lambda slot: None if not len((f := slot.mode()))>0 else f.values[0]}) #majority vote für die Predictions in den windows
+            .dropna(axis=0, how="all") #drop der NaN values falls beim interpolieren etwas schiefgegangen ist
+            .reset_index() 
         )
         # acts_by_time_df = (
         #     acts_by_time_df
@@ -255,6 +255,7 @@ def plot_activities_by_timestamp(acts_by_time_df, class_mapping=CLASS_MAPPING, c
     
     # Colored line per activity class
     # Split into sections of same activity
+    # stackoverflow magic
     acts_by_time_df['group'] = acts_by_time_df['activity'].ne(acts_by_time_df['activity'].shift()).cumsum()
     lines = acts_by_time_df.groupby('group')
     for _, line in lines:
@@ -284,7 +285,7 @@ def analysis(all_windows, all_times, all_raw_predictions, plot=True):
     raw_predictions = [i for t in all_raw_predictions for i in t]
 
     # Get smoothed mapping of (regular interval) timestamps to predicted activity
-    acts_by_time_df = activities_by_timestamps(windows, times, raw_predictions)
+    acts_by_time_df = activities_by_timestamps(times, raw_predictions)
     
     # Calc and plot total duration in minutes per activity class
     tot_durations_df = calc_total_durations(acts_by_time_df)
