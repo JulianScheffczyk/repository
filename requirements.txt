@@ -1,5 +1,0 @@
-streamlit
-streamlit_option_menu
-joblib
-scikit-learn
-matplotlib
