@@ -16,21 +16,6 @@ COLOR_MAPPING = ['green', 'blue', 'red', 'brown']
 # Streamlit-App konfigurieren
 st.title('MoveClassify')
 
-# Benutzerdefinierte Funktion zum Vorhersagen der Bewegungsart
-def predict_motion(data, model=trained_model):  # !! wird nicht mehr verwendet -> Funktion kann weg !!
-    # Führe Vorhersage mit dem Modell durch
-    prediction = model.predict(data.reshape(1, -1))
-    
-    # Mapping der Vorhersage auf die entsprechenden Klassen
-    if prediction == 0:
-        return 'Gegangen'
-    elif prediction == 1:
-        return 'Fahrrad gefahren'
-    elif prediction == 2:
-        return 'Auto gefahren'
-    elif prediction == 3:
-        return 'Bus gefahren'
-
 def main():
     # Seite auswählen
     selected = option_menu(
@@ -120,7 +105,7 @@ def show_about():
     st.title("About")
     st.write("Author: Julian Scheffczyk")
     st.image('JulianScheffczyk.jpg', caption='Julian Scheffczyk', width=200 ,output_format="auto")
-    st.write("Machine Learning Model: Neuronal Network - Classification (SciKit Learn)")
+    st.write("Machine Learning Model: Deep Neuronal Network (SciKit Learn)")
     st.write("https://scikit-learn.org/stable/modules/neural_networks_supervised.html#multi-layer-perceptron")
     st.write("Data Preperation: Windowing in 10 Sekunden Parts")
     st.write("Data Collection: Sensor Logger App")
